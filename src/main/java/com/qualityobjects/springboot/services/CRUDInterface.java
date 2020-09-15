@@ -2,6 +2,7 @@ package com.qualityobjects.springboot.services;
 
 import com.qualityobjects.commons.exception.ElementNotFoundException;
 import com.qualityobjects.commons.exception.QOException;
+import com.qualityobjects.springboot.entity.DtoWrapper;
 import com.qualityobjects.springboot.entity.EntityBase;
 import com.qualityobjects.springboot.repository.BaseRepository;
 import org.springframework.data.domain.Sort;
@@ -39,26 +40,30 @@ public interface CRUDInterface<T extends EntityBase<I>, I> {
 		entity.setModificationTimestamp(LocalDateTime.now());
 	}
 	
-	public default T getById(I id) throws QOException {
-		T ar = getRepository().findById(id).orElse(null);
+	public default DtoWrapper<T> getById(I id) throws QOException {
+		DtoWrapper<T> dtoWrapper = DtoWrapper.of(getRepository().findById(id).orElse(null));
 		
-		if (ar == null) { 
+		if (dtoWrapper == null) {
 			throw new ElementNotFoundException(getEntityName(), id);
 		}
-		return ar;
+		return dtoWrapper;
 	}
  
-	public default T create(T element) throws QOException {
+	public default DtoWrapper<T> create(T element) throws QOException {
 		loadCreationFields(element);
-		return getRepository().save(element); 
+		DtoWrapper<T> dtoWrapper = DtoWrapper.of(getRepository().save(element));
+		return dtoWrapper;
 	}
 
-	public default T update(T element) throws QOException {
-		T current = this.getById(element.getId());
+	public default DtoWrapper<T> update(T element) throws QOException {
+		DtoWrapper<T> currentDto = this.getById(element.getId());
+		T current = currentDto.getBean();
 		element.setCreationTimestamp(current.getCreationTimestamp());
 		element.setCreatedBy(current.getCreatedBy());
+		element.setVersion(element.getVersion()+1);
 		loadModificationFields(element);
-		return getRepository().save(element); 
+		DtoWrapper<T> dtoWrapper = DtoWrapper.of(getRepository().save(element));
+		return dtoWrapper;
 	}
 
 	public default void delete(I id) throws QOException {
@@ -66,23 +71,27 @@ public interface CRUDInterface<T extends EntityBase<I>, I> {
 	}
 
 
-	public default Iterable<T> findAll() throws QOException {
-		return getRepository().findAll();
+	public default Iterable<DtoWrapper<T>> findAll() throws QOException {
+		Iterable<DtoWrapper<T>>  dtoWrapperIterable = DtoWrapper.of(getRepository().findAll());
+		return dtoWrapperIterable;
 	}
 
 	public default Long count(Specification<T> specs) throws QOException {
 		return getRepository().count(specs);
 	}
 
-	public default Iterable<T> findAll(Specification<T> specs) throws QOException {
-		return this.findAll(specs, Sort.unsorted());
+	public default Iterable<DtoWrapper<T>> findAll(Specification<T> specs) throws QOException {
+		Iterable<DtoWrapper<T>>  dtoWrapperIterable = this.findAll(specs, Sort.unsorted());
+		return dtoWrapperIterable;
 	}
 
-	public default Iterable<T> findAll(Specification<T> specs, Sort sort) throws QOException {
+	public default Iterable<DtoWrapper<T>> findAll(Specification<T> specs, Sort sort) throws QOException {
 		if (sort ==  null) {
-			return getRepository().findAll(specs);
+			Iterable<DtoWrapper<T>>  dtoWrapperIterable = DtoWrapper.of(getRepository().findAll(specs));
+			return dtoWrapperIterable;
 		} else {
-			return getRepository().findAll(specs, sort);
+			Iterable<DtoWrapper<T>>  dtoWrapperIterable = DtoWrapper.of(getRepository().findAll(specs, sort));
+			return dtoWrapperIterable;
 		}
 	}	
 

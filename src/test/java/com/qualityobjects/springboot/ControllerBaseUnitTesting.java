@@ -2,6 +2,7 @@ package com.qualityobjects.springboot;
 
 import com.qualityobjects.commons.utils.JsonUtils;
 import com.qualityobjects.springboot.dto.PageData;
+import com.qualityobjects.springboot.entity.DtoWrapper;
 import com.qualityobjects.springboot.entity.EntityBase;
 import com.qualityobjects.springboot.services.CRUDInterface;
 import com.qualityobjects.springboot.services.PaginationInterface;
@@ -118,7 +119,7 @@ public abstract class ControllerBaseUnitTesting<T extends EntityBase<ID>, ID> {
 			final T bean = getBean();
 			@SuppressWarnings("unchecked")
 			final CRUDInterface<T, ID> service = (CRUDInterface<T, ID>) serviceMock;
-			when(service.create(bean)).thenReturn(bean);
+			when(service.create(bean)).thenReturn(DtoWrapper.of(bean));
 
 			mockMvc.perform(post(this.urlControllerBase).content(JsonUtils.toJSON(bean))
 					.contentType(MediaType.APPLICATION_JSON)).andExpect(status().isForbidden());
@@ -132,7 +133,7 @@ public abstract class ControllerBaseUnitTesting<T extends EntityBase<ID>, ID> {
 			final T bean = getBean();
 
 			final CRUDInterface<T, ID> service = (CRUDInterface<T, ID>) serviceMock;
-			when(service.create(any((Class<T>) bean.getClass()))).thenReturn(bean);
+			when(service.create(any((Class<T>) bean.getClass()))).thenReturn(DtoWrapper.of(bean));
 			mockMvc.perform(post(this.urlControllerBase).content(JsonUtils.toJSON(bean))
 					.contentType(MediaType.APPLICATION_JSON).characterEncoding("utf8")).andExpect(status().isOk())
 					.andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
@@ -148,7 +149,7 @@ public abstract class ControllerBaseUnitTesting<T extends EntityBase<ID>, ID> {
 		if (this.serviceMock instanceof CRUDInterface) {
 			final T bean = getBean();
 			final CRUDInterface<T, ID> service = (CRUDInterface<T, ID>) serviceMock;
-			when(service.update(any((Class<T>) bean.getClass()))).thenReturn(bean);
+			when(service.update(any((Class<T>) bean.getClass()))).thenReturn(DtoWrapper.of(bean));
 			mockMvc.perform(post(String.format("%s/%s", this.urlControllerBase, bean.getId()))
 					.content(JsonUtils.toJSON(bean)).contentType(MediaType.APPLICATION_JSON).characterEncoding("utf8"))
 					.andExpect(status().isOk())
@@ -165,7 +166,7 @@ public abstract class ControllerBaseUnitTesting<T extends EntityBase<ID>, ID> {
 			final T bean = getBean();
 			@SuppressWarnings("unchecked")
 			final CRUDInterface<T, ID> service = (CRUDInterface<T, ID>) serviceMock;
-			when(service.getById(bean.getId())).thenReturn(bean);
+			when(service.getById(bean.getId())).thenReturn(DtoWrapper.of(bean));
 			mockMvc.perform(get(String.format("%s/%s", this.urlControllerBase, bean.getId()))
 					.content(JsonUtils.toJSON(bean)).contentType(MediaType.APPLICATION_JSON).characterEncoding("utf8"))
 					.andExpect(status().isOk())
@@ -182,7 +183,7 @@ public abstract class ControllerBaseUnitTesting<T extends EntityBase<ID>, ID> {
 		if (this.serviceMock instanceof CRUDInterface) {
 			final T bean = getBean();
 			final CRUDInterface<T, ID> service = (CRUDInterface<T, ID>) serviceMock;
-			when(service.findAll(any(), any())).thenReturn(List.of(bean, bean, bean));
+			when(service.findAll(any(), any())).thenReturn(DtoWrapper.of(List.of(bean, bean, bean)));
 			mockMvc.perform(get(String.format("%s/", this.urlControllerBase))
 					.content(JsonUtils.toJSON(bean)).contentType(MediaType.APPLICATION_JSON).characterEncoding("utf8"))
 					.andExpect(status().isOk())
@@ -199,7 +200,7 @@ public abstract class ControllerBaseUnitTesting<T extends EntityBase<ID>, ID> {
 		if (this.serviceMock instanceof PaginationInterface) {
 			final T bean = getBean();
 			final PaginationInterface<T> service = (PaginationInterface<T>) serviceMock;
-			PageData<T> pg = PageData.of(List.of(bean, bean, bean), 30,null);
+			PageData<T> pg = PageData.of(DtoWrapper.of(List.of(bean, bean, bean)), 30,null);
 			when(service.getPage(any(), any(),any())).thenReturn(pg);
 			mockMvc.perform(get(String.format("%s/page", this.urlControllerBase))
 			.param("_page", "2")

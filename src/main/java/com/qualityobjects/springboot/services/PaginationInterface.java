@@ -3,6 +3,7 @@ package com.qualityobjects.springboot.services;
 import com.qualityobjects.commons.exception.QOException;
 import com.qualityobjects.springboot.dto.PageData;
 import com.qualityobjects.springboot.dto.PageParams;
+import com.qualityobjects.springboot.entity.DtoWrapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -17,6 +18,6 @@ public interface PaginationInterface<T> {
 		
 	public default PageData<T> getPage(Pageable pageable, Specification<T> specs, PageParams params) throws QOException {
 		Page<T> pageData = getRepository().findAll(specs, pageable);
-		return new PageData<>(pageData,params);
+		return PageData.of(pageData,params);
 	}
 }

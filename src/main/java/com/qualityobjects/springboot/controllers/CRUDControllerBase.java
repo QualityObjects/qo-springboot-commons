@@ -2,6 +2,7 @@ package com.qualityobjects.springboot.controllers;
 
 import com.qualityobjects.commons.exception.InvalidInputDataException;
 import com.qualityobjects.commons.exception.QOException;
+import com.qualityobjects.springboot.entity.DtoWrapper;
 import com.qualityobjects.springboot.entity.EntityBase;
 import com.qualityobjects.springboot.services.CRUDInterface;
 import org.springframework.data.domain.Sort;
@@ -23,10 +24,11 @@ public interface CRUDControllerBase<T extends EntityBase<I>, I> extends Specific
 	public CRUDInterface<T, I> getService();
 
 	@GetMapping(path = {"/", ""})
-	public default Iterable<T> list(@RequestParam MultiValueMap<String, String> filterParams) throws QOException {
+	public default Iterable<DtoWrapper<T>> list(@RequestParam MultiValueMap<String, String> filterParams) throws QOException {
 		Specification<T> specs = this.getSpecificationFilter(filterParams);
 		Sort sort = this.getSort(filterParams);
-		return getService().findAll(specs, sort);
+		Iterable<DtoWrapper<T>> dtoWrapper = getService().findAll(specs, sort);
+		return dtoWrapper;
 	}
 
 	@GetMapping(path = {"/count"})
@@ -58,22 +60,26 @@ public interface CRUDControllerBase<T extends EntityBase<I>, I> extends Specific
 	 * @throws QOException
 	 */
 	@PostMapping(path = {"/", ""})
-	public default T create(@RequestBody Optional<T> param) throws QOException {
+	public default DtoWrapper<T> create(@RequestBody Optional<T> param) throws QOException {
+
 		T element = param.orElse(null);
 		if (element == null) {
 			throw new InvalidInputDataException();
 		}
-		return getService().create(element);
+		DtoWrapper<T> dtoWrapper = getService().create(element);
+		return dtoWrapper;
 	}
 
 	@GetMapping(path = "/{id}")
-	public default T findOne(@PathVariable("id") I idElement) throws QOException {
-		return getService().getById(idElement);
+	public default DtoWrapper<T> findOne(@PathVariable("id") I idElement) throws QOException {
+		DtoWrapper<T> dtoWrapper = getService().getById(idElement);
+		return dtoWrapper;
 	}
 
 	@PostMapping(path = "/{id}")
-	public default T update(@PathVariable("id") I idElement, @RequestBody T element) throws QOException {
-		return getService().update(element);
+	public default DtoWrapper<T> update(@PathVariable("id") I idElement, @RequestBody T element) throws QOException {
+		DtoWrapper<T> dtoWrapper = getService().update(element);
+		return dtoWrapper;
 	}
 
 	@DeleteMapping(path = "/{id}")
