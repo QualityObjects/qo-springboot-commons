@@ -16,7 +16,7 @@ import java.util.stream.Stream;
 
 @Repository
 @Transactional(readOnly = true)
-public class StreamSpecificationRepositoryImpl<T> implements com.qualityobjects.springboot.repository.StreamSpecificationRepository<T> {
+public class StreamSpecificationRepositoryImpl<T> implements StreamSpecificationRepository<T> {
 
 	@PersistenceContext
 	private EntityManager em;
