@@ -31,7 +31,7 @@ public class SpecsFilterUtils {
 
     // ADD DATE RANGE
 	public static void addDateRange(String paramMin,String paramMax, String dbField, QuerySpecificationsBuilder<?> builder) {
-    	 
+
 		if (!StringUtils.isEmpty(paramMin)) {
 		   LocalDate initDate = LocalDate.parse(paramMin);
 			 builder.with(dbField, FilterOperator.GREATER_THAN_OR_EQUAL, initDate);
@@ -43,7 +43,7 @@ public class SpecsFilterUtils {
 	}
 
 	public static void addDateTimeRange(String paramMin,String paramMax, String dbField, QuerySpecificationsBuilder<?> builder) {
-    	 
+
 		if (!StringUtils.isEmpty(paramMin)) {
 			 builder.with(dbField, FilterOperator.GREATER_THAN_OR_EQUAL, parseLocalDateTime(paramMin));
 		}
@@ -53,7 +53,7 @@ public class SpecsFilterUtils {
 	}
 
 	private static LocalDateTime parseLocalDateTime(String dateTimeStr) {
-		
+
 		if (dateTimeStr.length() <= 10) {
 			return LocalDate.parse(dateTimeStr).atTime(0, 0);
 		} else {
@@ -62,7 +62,7 @@ public class SpecsFilterUtils {
 	}
 
 	public static void addDateEquals(String paramDate, String dbField, QuerySpecificationsBuilder<?> builder) {
-    	 
+
 		if (!StringUtils.isEmpty(paramDate)) {
 		   LocalDate date = LocalDate.parse(paramDate);
 			 builder.with(dbField, FilterOperator.EQUAL, date);
@@ -93,7 +93,7 @@ public class SpecsFilterUtils {
 
     // ADD INTEGER RANGE
      public static void addIntegerRange(String paramMin, String paramMax, String dbField, QuerySpecificationsBuilder<?> builder) {
-     
+
     	 if (!StringUtils.isEmpty(paramMin)) {
    			builder.with(dbField, FilterOperator.GREATER_THAN_OR_EQUAL, Integer.parseInt(paramMin));
    		}
@@ -111,11 +111,7 @@ public class SpecsFilterUtils {
 
     // ADD INTEGER IN
     public static void addIntegerIn(List<String> params, String dbField, QuerySpecificationsBuilder<?> builder) {
-        // if (params != null && !params.isEmpty()) {
-		// 	builder.with(dbField, FilterOperator.IN, params);
-		// }
-
-        if (!ObjectUtils.isEmpty(params)) {
+       if (!ObjectUtils.isEmpty(params)) {
 			builder.with(dbField, FilterOperator.IN, params.parallelStream().map(Integer::parseInt).collect(Collectors.toList()));
 		}
     }
@@ -147,25 +143,12 @@ public class SpecsFilterUtils {
             builder.with(dbField, FilterOperator.EQUAL, Boolean.valueOf(param));
         }
     }
-    
+
     //METODO IS NULL
     public static <T> void addStringIsNull(String field, QuerySpecificationsBuilder<T> builder) {
-    	
+
 		Specification<T> partialSpecs = builder.partialBuild(LogicalOperator.OR,
 				new SearchCriteria(field, FilterOperator.IS_NULL, null));
 		builder.with(partialSpecs);
     }
-    
-    //SPECIALACTIVITY CUSTOMER
-    /*public static void addSpecialActivityCustomer(String value, String field, QuerySpecificationsBuilder<?> builder) {
-	
-		if (!StringUtils.isEmpty(value)) {
-			
-		builder.with(SearchCriteria.of(FilterOperator.EXISTS,
-		SpecialActivityWorked.class,
-		List.of(SearchCriteria.of(field, FilterOperator.EQUAL, value)), // 123 = Customer id que llega como parámetro
-		SearchCriteria.parentRef("id", "idSpecialActivity")));
-	}
-}*/
-
 }

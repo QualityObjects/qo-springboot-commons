@@ -51,7 +51,7 @@ public interface CRUDInterface<T extends EntityBase<I>, I> {
  
 	public default DtoWrapper<T> create(T element) throws QOException {
 		loadCreationFields(element);
-		DtoWrapper<T> dtoWrapper = DtoWrapper.of(getRepository().save(element));
+		DtoWrapper<T> dtoWrapper = DtoWrapper.of(getRepository().saveAndFlush(element));
 		return dtoWrapper;
 	}
 
@@ -60,9 +60,8 @@ public interface CRUDInterface<T extends EntityBase<I>, I> {
 		T current = currentDto.getBean();
 		element.setCreationTimestamp(current.getCreationTimestamp());
 		element.setCreatedBy(current.getCreatedBy());
-		element.setVersion(element.getVersion()+1);
 		loadModificationFields(element);
-		DtoWrapper<T> dtoWrapper = DtoWrapper.of(getRepository().save(element));
+		DtoWrapper<T> dtoWrapper = DtoWrapper.of(getRepository().saveAndFlush(element));
 		return dtoWrapper;
 	}
 

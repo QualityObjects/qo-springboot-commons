@@ -2,7 +2,12 @@ package com.qualityobjects.springboot.specifications;
 
 import org.springframework.data.jpa.domain.Specification;
 
-import javax.persistence.criteria.*;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Path;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
+import javax.persistence.criteria.Subquery;
 import java.util.Collection;
 import java.util.Set;
 
@@ -67,7 +72,7 @@ public class QuerySpecification<T> implements Specification<T> {
 	/**
 	 * Método que devuelve Predicate con respecto a si es el tipo de operador no es
 	 * collection
-	 * 
+	 *
 	 * @param fieldPath
 	 * @param builder
 	 * @return
@@ -83,7 +88,7 @@ public class QuerySpecification<T> implements Specification<T> {
 	/**
 	 * Método que devuelve Predicate con respecto a si es el tipo de operador es
 	 * collection
-	 * 
+	 *
 	 * @param fieldPath
 	 * @param builder
 	 * @return
@@ -104,7 +109,7 @@ public class QuerySpecification<T> implements Specification<T> {
 	/**
 	 * Método que devuelve Predicate con respecto a si es el tipo de operador es
 	 * String
-	 * 
+	 *
 	 * @param fieldPath
 	 * @param builder
 	 * @return
@@ -120,7 +125,7 @@ public class QuerySpecification<T> implements Specification<T> {
 
 	/**
 	 * Método que devuelve Predicate con respecto a si existe operador o no
-	 * 
+	 *
 	 * @param builder
 	 * @param root
 	 * @param query
