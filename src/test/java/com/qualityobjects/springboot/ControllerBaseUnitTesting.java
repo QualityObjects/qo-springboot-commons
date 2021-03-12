@@ -7,9 +7,9 @@ import com.qualityobjects.springboot.entity.EntityBase;
 import com.qualityobjects.springboot.services.CRUDInterface;
 import com.qualityobjects.springboot.services.PaginationInterface;
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
+
 import org.junit.jupiter.api.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Profile;
@@ -47,9 +47,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 //@ComponentScan(includeFilters = @Filter(type = FilterType.ASSIGNABLE_TYPE, classes = CustomerController.class))
 //@Import({ CustomerController.class, TestAuthConfiguration.class, SecurityAOPConfig.class})  //, TestAuthConfiguration.class })
+@Slf4j
 @ActiveProfiles({"test", "unittest"})
 public abstract class ControllerBaseUnitTesting<T extends EntityBase<ID>, ID> {
-	private static final Logger LOG = LoggerFactory.getLogger(ControllerBaseUnitTesting.class);
 
 	// Configuration to use the mock-user
 	@Profile("unittest")
@@ -58,7 +58,7 @@ public abstract class ControllerBaseUnitTesting<T extends EntityBase<ID>, ID> {
 
 		@Override
 		protected void configure(final HttpSecurity http) throws Exception {
-			LOG.info("configure(HttpSecurity http) ");
+			log.info("configure(HttpSecurity http) ");
 			http.csrf().disable().authorizeRequests().filterSecurityInterceptorOncePerRequest(true)
 					.antMatchers("/api/session/**").permitAll() //
 					.antMatchers("/api/**").authenticated() //
@@ -70,7 +70,7 @@ public abstract class ControllerBaseUnitTesting<T extends EntityBase<ID>, ID> {
 								throws ServletException, IOException {
 							final Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 							if (auth != null) {
-								LOG.info("User authenticated: {}, roles: {}, req: {} {}", auth.getName(),
+								log.info("User authenticated: {}, roles: {}, req: {} {}", auth.getName(),
 										auth.getAuthorities(), request.getMethod(), request.getRequestURI());
 							}
 							filterChain.doFilter(request, response);

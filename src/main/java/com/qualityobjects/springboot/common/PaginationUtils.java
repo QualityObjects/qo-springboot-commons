@@ -1,7 +1,5 @@
 package com.qualityobjects.springboot.common;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -9,17 +7,17 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.util.Arrays;
 import java.util.List;
 
 /**
  * Clase con métodos de utilidad para la paginación de Spring Data
  */
+@Slf4j
 @Service
 public class PaginationUtils {
-
-    @SuppressWarnings("unused")
-	private static final Logger LOG = LoggerFactory.getLogger(PaginationUtils.class);
 
     public Sort generateSort(List<String> sortFields, Sort.Direction sortDirection) {
     	if (ObjectUtils.isEmpty(sortFields)) {
