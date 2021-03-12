@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>com.qualityobjects</groupId>
 	<artifactId>qo-springboot-commons</artifactId>
-	<version>0.0.4-SNAPSHOT</version>
+	<version>0.0.5-SNAPSHOT</version>
 	<name>qo-springboot-commons</name>
 	<description>Clases comunes de springboot</description>
 
