@@ -40,7 +40,7 @@ public interface CRUDControllerBase<T extends EntityBase<I>, I> extends Specific
 	private Sort getSort(MultiValueMap<String, String> params) {
 		if (!params.isEmpty()) {
 			String sortField = params.getFirst("_sortField");
-			if (!StringUtils.isEmpty(sortField)) {
+			if (StringUtils.hasLength(sortField)) {
 				String dir = params.getFirst("_sortDir");
 				if (dir == null) {
 					return Sort.by(sortField);

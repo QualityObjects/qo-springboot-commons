@@ -25,7 +25,7 @@ public class SpecsFilterUtils {
 
     // ADD STRING LIKE
     public static void addStringLike(String param, String dbField, QuerySpecificationsBuilder<?> builder) {
-		if (!StringUtils.isEmpty(param)) {
+		if (StringUtils.hasLength(param)) {
 			builder.with(dbField, FilterOperator.LIKE, param);
 		}
     }
@@ -33,11 +33,11 @@ public class SpecsFilterUtils {
     // ADD DATE RANGE
 	public static void addDateRange(String paramMin,String paramMax, String dbField, QuerySpecificationsBuilder<?> builder) {
 
-		if (!StringUtils.isEmpty(paramMin)) {
+		if (StringUtils.hasLength(paramMin)) {
 		   LocalDate initDate = LocalDate.parse(paramMin);
 			 builder.with(dbField, FilterOperator.GREATER_THAN_OR_EQUAL, initDate);
 		 }
-		 if (!StringUtils.isEmpty(paramMax)) {
+		 if (StringUtils.hasLength(paramMax)) {
 			 LocalDate endDate =  LocalDate.parse(paramMax);
 			 builder.with(dbField, FilterOperator.LOWER_THAN_OR_EQUAL, endDate);
 		 }
@@ -45,10 +45,10 @@ public class SpecsFilterUtils {
 
 	public static void addDateTimeRange(String paramMin,String paramMax, String dbField, QuerySpecificationsBuilder<?> builder) {
 
-		if (!StringUtils.isEmpty(paramMin)) {
+		if (StringUtils.hasLength(paramMin)) {
 			 builder.with(dbField, FilterOperator.GREATER_THAN_OR_EQUAL, parseLocalDateTime(paramMin));
 		}
-		if (!StringUtils.isEmpty(paramMax)) {
+		if (StringUtils.hasLength(paramMax)) {
 			builder.with(dbField, FilterOperator.LOWER_THAN_OR_EQUAL, parseLocalDateTime(paramMax));
 		}
 	}
@@ -64,7 +64,7 @@ public class SpecsFilterUtils {
 
 	public static void addDateEquals(String paramDate, String dbField, QuerySpecificationsBuilder<?> builder) {
 
-		if (!StringUtils.isEmpty(paramDate)) {
+		if (StringUtils.hasLength(paramDate)) {
 		   LocalDate date = LocalDate.parse(paramDate);
 			 builder.with(dbField, FilterOperator.EQUAL, date);
 		 }
@@ -73,16 +73,16 @@ public class SpecsFilterUtils {
     // ADD DATE RANGE IN RANGE
     public static <T>  void addDateRangeInRange(String paramMin, String paramMax, String dbFieldMin, String dbFieldMax, QuerySpecificationsBuilder<?> builder) {
 
-		if(!StringUtils.isEmpty(paramMin) || !StringUtils.isEmpty(paramMax)) {
+		if(StringUtils.hasLength(paramMin) || StringUtils.hasLength(paramMax)) {
 			List<SearchCriteria> criteriasOr = new ArrayList<>();
 
-			if (!StringUtils.isEmpty(paramMin)) {
+			if (StringUtils.hasLength(paramMin)) {
 				LocalDate initDate = LocalDate.parse(paramMin);
 
 				criteriasOr.add(new SearchCriteria(dbFieldMax, FilterOperator.GREATER_THAN_OR_EQUAL, initDate));
 			}
 
-			if (!StringUtils.isEmpty(paramMax)){
+			if (StringUtils.hasLength(paramMax)){
 				LocalDate endDate =  LocalDate.parse(paramMax);
 				criteriasOr.add(new SearchCriteria(dbFieldMin, FilterOperator.LOWER_THAN_OR_EQUAL, endDate));
 			}
@@ -95,10 +95,10 @@ public class SpecsFilterUtils {
     // ADD INTEGER RANGE
      public static void addIntegerRange(String paramMin, String paramMax, String dbField, QuerySpecificationsBuilder<?> builder) {
 
-    	 if (!StringUtils.isEmpty(paramMin)) {
+    	 if (StringUtils.hasLength(paramMin)) {
    			builder.with(dbField, FilterOperator.GREATER_THAN_OR_EQUAL, Integer.parseInt(paramMin));
    		}
-   		if (!StringUtils.isEmpty(paramMax)) {
+   		if (StringUtils.hasLength(paramMax)) {
    			builder.with(dbField, FilterOperator.LOWER_THAN_OR_EQUAL, Integer.parseInt(paramMax));
    		}
      }
@@ -119,28 +119,28 @@ public class SpecsFilterUtils {
 
     // ADD INTEGER EQUALS
     public static void addIntegerEquals(String param, String dbField, QuerySpecificationsBuilder<?> builder) {
-        if (!StringUtils.isEmpty(param)) {
+        if (StringUtils.hasLength(param)) {
 			builder.with(dbField, FilterOperator.EQUAL, Integer.parseInt(param));
 		}
     }
 
     // ADD DOUBLE EQUALS
     public static void addDoubleEquals(String param, String dbField, QuerySpecificationsBuilder<?> builder) {
-        if (!StringUtils.isEmpty(param)) {
+        if (StringUtils.hasLength(param)) {
 			builder.with(dbField, FilterOperator.EQUAL, Double.parseDouble(param));
 		}
     }
 
     // ADD STRING EQUALS
     public static void addStringEquals(String param, String dbField, QuerySpecificationsBuilder<?> builder) {
-        if (!StringUtils.isEmpty(param)) {
+        if (StringUtils.hasLength(param)) {
 			builder.with(dbField, FilterOperator.EQUAL, param);
 		}
     }
 
     // ADD BOOLEAN EQUALS
     public static void addBooleanEquals(String param, String dbField, QuerySpecificationsBuilder<?> builder) {
-        if (!StringUtils.isEmpty(param)) {
+        if (StringUtils.hasLength(param)) {
             builder.with(dbField, FilterOperator.EQUAL, Boolean.valueOf(param));
         }
     }
