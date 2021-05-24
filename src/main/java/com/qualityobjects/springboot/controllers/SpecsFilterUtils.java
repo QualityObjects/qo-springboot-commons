@@ -5,9 +5,9 @@ import com.qualityobjects.springboot.specifications.LogicalOperator;
 import com.qualityobjects.springboot.specifications.QuerySpecificationsBuilder;
 import com.qualityobjects.springboot.specifications.SearchCriteria;
 
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.util.ObjectUtils;
+import org.springframework.util.StringUtils;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
