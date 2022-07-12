@@ -47,7 +47,7 @@ pipeline {
 				sh 'mkdir -p .cache/.m2 && sleep 1'
 				withCredentials([file(credentialsId: mavenCredentialsId, variable: 'MVN_SETTINGS')]) {
 //					sh 'mkdir -p .cache/.m2 | cp "$MVN_SETTINGS" .cache/.m2/settings.xml && chmod 600 .cache/.m2/settings.xml'
-                  sh 'cp "$MVN_SETTINGS" .cache/.m2/settings.xml && chmod 600 .cache/.m2/settings.xml'
+                    sh 'cp "$MVN_SETTINGS" .cache/.m2/settings.xml && chmod 600 .cache/.m2/settings.xml && cat .cache/.m2/settings.xml'
 				}
 			}
 		}
