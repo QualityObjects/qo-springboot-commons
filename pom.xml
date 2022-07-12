@@ -125,7 +125,7 @@
 		<repository>
 			<id>qo-releases</id>
 			<name>QO Releases</name>
-			<url>https://nexus.qodev.es/repository/maven-releases/</url>
+			<url>https://nexus.qodev.es/repository/maven-snapshots/</url>
 
 		</repository>
 	</distributionManagement>
